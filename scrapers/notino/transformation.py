@@ -53,9 +53,9 @@ class NotinoTransformation(NotinoScraper):
                                self.csv_head[9]: self.fill_lists[5]}
             df = pd.DataFrame(dict_for_pandas)
             if os.path.exists(self.file_name_raw):
-                df.to_csv(self.file_name_raw, encoding=self.encode_name, mode='a', header=False, index=False)
+                df.to_csv(self.file_name_raw, encoding=self.encode_name, mode='a', header=False, index=False, errors="replace")
             else:
-                df.to_csv(self.file_name_raw, encoding=self.encode_name, index=False)
+                df.to_csv(self.file_name_raw, encoding=self.encode_name, index=False, errors="replace")
             self.read_from_csv()
             self.logger.info("The scraping has been completed")
         except Exception as e:
@@ -64,4 +64,4 @@ class NotinoTransformation(NotinoScraper):
     def read_from_csv(self):
         df = pd.read_csv(self.file_name_raw, encoding=self.encode_name)
         df.drop_duplicates(subset="url", inplace=True)
-        return df.to_csv(self.file_name_transformed, index=False, encoding=self.encode_name)
+        return df.to_csv(self.file_name_transformed, index=False, encoding=self.encode_name, errors="replace")
